@@ -20,8 +20,6 @@ public class GameManager : MonoBehaviour
     public int score { get; private set; }
     public int highScore { get; private set; }
     public int lives { get; private set; }
-    public bool gameRunning = false;
-    public bool gameHadData = false;
     
     public static List<int> listfood;
     private void Start()
@@ -37,7 +35,6 @@ public class GameManager : MonoBehaviour
         }
         if (!LoadGame())
         NewGame();
-        gameRunning = true;
     }
 
     void OnApplicationQuit()
@@ -61,20 +58,8 @@ public class GameManager : MonoBehaviour
         SoundManager.Instance.PlaySound(SoundManager.PlayList.Pacman_StartSound);
         SetScore(0);
         SetLives(3);
-        //SetHighScore(gameData.highScore, 0);
         NewRound();
     }
-
-    /*public void ContinueGame()
-    {
-        scoreText.text = score.ToString();
-        gameRunning = true;
-        SetLives(lives);
-        foreach (var ghost in ghosts)
-        {
-            ghost.gameObject.SetActive(true);
-        }
-    }*/
     public void SaveGame()
     {
         GameData gameData = new GameData();
@@ -129,63 +114,6 @@ public class GameManager : MonoBehaviour
         }
         return false;
     }
-    /*public void SaveGame()
-    {
-        gameData = new GameData();
-        gameData.score = score;
-        gameData.live = lives;
-        if (highScore > gameData.highScore)
-        {
-            gameData.highScore = highScore;
-        }
-        gameData.pacmanPos = this.pacman.transform.position;
-        List<int> foodlists = new List<int>();
-        foreach (var pellet in listPellet)
-        {
-            if (pellet.gameObject.activeSelf == false) foodlists.Add(0);
-            else foodlists.Add(1);
-        }
-        gameData.pellets = foodlists;
-        SaveSystem.Instance.SaveGame(gameData);
-        
-        List<GhostData> ghostDatas = new List<GhostData>();
-        for (int i = 0; i < ghosts.Length; i++)
-        {
-            GhostData data = new GhostData();
-            data.ghostsPos = ghosts[i].transform.position;
-            data.CurrentDirection = ghosts[i].movement.direction;
-            data.ghostsBehaviour = (int)ghosts[i].behaviour;
-            ghostDatas.Add(data);
-        }
-        SaveSystem.Instance.SaveList(ghostDatas);
-    }*/
-
-    /*public bool LoadGame()
-    {
-        gameData = SaveSystem.Instance.LoadGameData();
-        List<GhostData> ghostDatas = SaveSystem.Instance.LoadGhostList(ghosts.Length);
-        if (gameData.hadData)
-        {
-            this.lives = gameData.live;
-            this.score = gameData.score;
-            this.highScore = gameData.highScore;
-            SetScore(score);
-            SetHighScore(highScore, score);
-            for (int i = 0; i < listPellet.Count; i++)
-            {
-                if (gameData.pellets[i] == 0) listPellet[i].gameObject.SetActive(false);
-            }
-            for (int i = 0; i < ghosts.Length; i++)
-            {
-                ghosts[i].transform.position = ghostDatas[i].ghostsPos;
-                ghosts[i].movement.SetDirection(ghostDatas[i].CurrentDirection);
-                ghosts[i].behaviour = (Ghost.Behaviour)ghostDatas[i].ghostsBehaviour;
-            }
-            this.pacman.transform.position = gameData.pacmanPos;
-            return true;
-        }
-        return false;
-    }*/
 
     private void NewRound()
     {
